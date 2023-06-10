@@ -3,10 +3,9 @@ namespace Core45\SystemSettingsDB;
 
 use Core45\SystemSettingsDb\Http\Middleware\SystemSettingsFromDBMiddleware;
 use Core45\SystemSettingsDb\Http\Models\SystemSetting;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
+use Schema;
 
 class SystemSettingsDBServiceProvider extends ServiceProvider
 {
@@ -17,16 +16,19 @@ class SystemSettingsDBServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        config([
-            'system-settings' => Cache::remember('system-settings', config('system-settings-db.cache-ttl') ?? 60, function () {
-                return SystemSetting::all(['key','value'])
-                    ->keyBy('key')
-                    ->transform(function ($setting) {
-                        return $setting->value;
-                    })
-                    ->toArray();
-            })
-        ]);
+        if (Schema::hasTable('system_settings')) {
+            config([
+                'system-settings' => Cache::remember('system-settings', config('system-settings-db.cache-ttl') ?? 60, function () {
+                    return SystemSetting::all(['key','value'])
+                        ->keyBy('key')
+                        ->transform(function ($setting) {
+                            return $setting->value;
+                        })
+                        ->toArray();
+                })
+            ]);
+        }
+
 
 
 
