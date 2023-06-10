@@ -1,0 +1,25 @@
+{
+    "name": "core45/system-settings-db",
+    "description": "Get system settings from database",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Core45\\SystemSettingsDb\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Core45\\SystemSettingsDb\\SystemSettingsDBServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "Kornel",
+            "email": "kornel@core45.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
