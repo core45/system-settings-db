@@ -24,7 +24,7 @@ php artisan migrate
 ### Setting a value
 In the database you can set a value for a key. The key is a string and the value can be a string, integer or boolean.
 
-To access the value os a key you can use the `config()` helper function.
+To access the value of a key you can use the `config()` helper function.
 
 ```php
 config('system-settings-db.key');
