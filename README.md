@@ -1,6 +1,6 @@
 # system-settings-db
 
-Very simple of storing a settings for your Laravel project in the database.
+Very simple package for storing settings for your Laravel project in the database.
 
 ## Installation
 
