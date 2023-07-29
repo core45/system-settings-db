@@ -1,7 +1,6 @@
 <?php
 namespace Core45\SystemSettingsDB;
 
-use Core45\SystemSettingsDb\Http\Middleware\SystemSettingsFromDBMiddleware;
 use Core45\SystemSettingsDb\Http\Models\SystemSetting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +17,7 @@ class SystemSettingsDBServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('system_settings')) {
             config([
-                'system-settings' => Cache::remember('system-settings', config('system-settings-db.cache-ttl') ?? 60, function () {
+                'system-settings' => Cache::remember('system-settings', config('system-settings.cache-ttl') ?? 60, function () {
                     return SystemSetting::all(['key','value'])
                         ->keyBy('key')
                         ->transform(function ($setting) {
