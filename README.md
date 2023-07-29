@@ -41,8 +41,8 @@ My email is: <a href="mailto:{{ config('system-settings.email') }}">{{ config('s
 ```
 
 ## Cache
-The package uses the Laravel cache to store the settings.
-Default TTL of the cache is 60 seconds. You can change this in the config file.
+The package uses the Laravel cache so if you'd like to see the changes immediately clean the Laravel cache.
+Default TTL of the cache is 60 seconds. You can change this setting in the config file.
 
 ## License
 MIT
