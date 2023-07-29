@@ -40,5 +40,9 @@ So for example in your blade template you can use your contact email you previou
 My email is: <a href="mailto:{{ config('system-settings.email') }}">{{ config('system-settings.email') }}</a>
 ```
 
+## Cache
+The package uses the Laravel cache to store the settings.
+Default TTL of the cache is 60 seconds. You can change this in the config file.
+
 ## License
 MIT
