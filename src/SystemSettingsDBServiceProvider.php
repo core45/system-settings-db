@@ -15,17 +15,22 @@ class SystemSettingsDBServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if (Schema::hasTable('system_settings')) {
-            config([
-                'system-settings' => Cache::remember('system-settings', config('system-settings-db.cache-ttl') ?? 60, function () {
-                    return SystemSetting::all(['key','value'])
-                        ->keyBy('key')
-                        ->transform(function ($setting) {
-                            return $setting->value;
-                        })
-                        ->toArray();
-                })
-            ]);
+        try {
+            if (Schema::hasTable('system_settings')) {
+                config([
+                    'system-settings' => Cache::remember('system-settings', config('system-settings-db.cache-ttl') ?? 60, function () {
+                        return SystemSetting::all(['key','value'])
+                            ->keyBy('key')
+                            ->transform(function ($setting) {
+                                return $setting->value;
+                            })
+                            ->toArray();
+                    })
+                ]);
+            }
+        }
+        catch (\Exception $e) {
+            // Do nothing
         }
 
 
