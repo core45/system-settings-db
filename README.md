@@ -2,6 +2,11 @@
 
 Very simple package for storing settings for your Laravel project in the database.
 
+## Requirements
+
+- PHP 8.3+
+- Laravel 12 or 13
+
 ## Installation
 
 Install the package with composer:
@@ -11,7 +16,13 @@ composer require core45/system-settings-db
 
 Publish the package files:
 ```
-php artisan vendor:publish --provider="Core45\SystemSettingsDb\SystemSettingsDbServiceProvider"
+php artisan vendor:publish --tag=system-settings-db
+```
+
+Or publish only one part:
+```
+php artisan vendor:publish --tag=system-settings-db-config
+php artisan vendor:publish --tag=system-settings-db-migrations
 ```
 
 Migrate the database:

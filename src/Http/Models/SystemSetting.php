@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class SystemSetting extends Model
 {
-    public $table = 'system_settings';
+    protected $table = 'system_settings';
+
+    /** @var list<string> */
+    protected $fillable = [
+        'name',
+        'key',
+        'value',
+        'description',
+    ];
 }

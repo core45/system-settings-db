@@ -2,9 +2,23 @@
     "name": "core45/system-settings-db",
     "description": "Get system settings for your Laravel app from database",
     "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^12.0|^13.0",
+        "illuminate/database": "^12.0|^13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0|^11.0",
+        "phpunit/phpunit": "^11.0|^12.0"
+    },
     "autoload": {
         "psr-4": {
             "Core45\\SystemSettingsDb\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Core45\\SystemSettingsDb\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -20,7 +34,9 @@
             "email": "kornel@core45.com"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {},
-    "version": "0.1.5"
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
 }

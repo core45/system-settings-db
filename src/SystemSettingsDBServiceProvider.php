@@ -1,49 +1,56 @@
 <?php
-namespace Core45\SystemSettingsDB;
+
+namespace Core45\SystemSettingsDb;
 
 use Core45\SystemSettingsDb\Http\Models\SystemSetting;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Schema;
+use Throwable;
 
 class SystemSettingsDBServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->mergeConfigFrom(__DIR__.'/../config/system-settings-db.php', 'system-settings-db');
     }
 
     public function boot(): void
     {
-        try {
-            if (Schema::hasTable('system_settings')) {
-                config([
-                    'system-settings' => Cache::remember('system-settings', config('system-settings-db.cache-ttl') ?? 60, function () {
-                        return SystemSetting::all(['key','value'])
-                            ->keyBy('key')
-                            ->transform(function ($setting) {
-                                return $setting->value;
-                            })
-                            ->toArray();
-                    })
-                ]);
-            }
-        }
-        catch (\Exception $e) {
-            // Do nothing
-        }
+        $this->loadSettingsIntoConfig();
 
-
-
-
-        // ============ Publish assets with php artisan vendor:publish ============
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/system-settings-db.php' => config_path('system-settings-db.php'),
-                __DIR__ . '/../database/migrations/2023_06_10_185503_create_system_settings_table.php' =>
-                    database_path('migrations/' . date('Y_m_d_His', time()) . '_create_system_settings_table.php'),
-                    // More migration files here
-            ], 'system-settings-db');
+            ], ['system-settings-db', 'system-settings-db-config']);
+
+            $this->publishesMigrations([
+                __DIR__.'/../database/migrations' => database_path('migrations'),
+            ], ['system-settings-db', 'system-settings-db-migrations']);
+        }
+    }
+
+    /**
+     * Load every stored setting into the `system-settings` config namespace.
+     */
+    protected function loadSettingsIntoConfig(): void
+    {
+        try {
+            if (! Schema::hasTable('system_settings')) {
+                return;
+            }
+
+            $settings = Cache::remember(
+                'system-settings',
+                (int) config('system-settings-db.cache-ttl', 60),
+                fn (): array => SystemSetting::query()
+                    ->pluck('value', 'key')
+                    ->all()
+            );
+
+            config(['system-settings' => $settings]);
+        } catch (Throwable) {
+            // Database unavailable or not migrated yet - leave config untouched.
         }
     }
 }
